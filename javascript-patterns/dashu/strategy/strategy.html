@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html >
+<head lang="en" >
+    <meta charset="UTF-8" >
+    <title ></title >
+</head >
+<body >
+<script >
+    /**
+     * 策略模式定义了一些列算法, 从概念上讲, 所有这些算法都做相同的事，只是实现不同，
+     * 它可以相同的方式调用所有的所有的方法。
+     * @type {{types: {}, messages: Array, config: {}, validate: Function}}
+     */
+    var validator = {
+
+        types   : {},
+
+        messages: [],
+
+        config: {},
+
+        validate: function (formData) {
+            var key, msg, type, checker, result;
+
+            this.messages = [];
+
+            for (key in formData) {
+
+                var type = this.config[key];
+
+                if( !type ) {
+                    continue;
+                }
+
+                checker = this.types[type];
+
+                if( !checker ) {
+                    throw {
+                      name: "ValidationError",
+                      message: "No handler to validate type" + type
+                    };
+                }
+
+                result = checker.validate(formData[key]);
+
+                if( !result ) {
+                    this.messages.push(checker.instructions);
+                }
+            }
+        }
+    };
+
+
+    validator.types.isNonEmpty = {
+        validate: function(value) {
+            return value != "";
+        },
+        instructions: "no empty"
+    }
+
+    validator.types.isNumber = {
+        validate: function(value) {
+            return false;
+        },
+        instructions: "need number"
+    }
+
+    validator.types.isAlphaNum = {
+        validate: function(value) {
+            return true;
+        },
+        instructions: "mush \w"
+    }
+
+    var formData = {
+        first_name: 'xx',
+        last_name : 'yyy',
+        age       : 'unknown',
+        username  : 'hero'
+    };
+
+    validator.config = {
+        first_name: 'isNonEmpty',
+        age       : 'isNumber',
+        username  : 'isAlphaNum'
+    };
+
+
+    validator.validate(formData);
+    console.log(validator.messages);
+
+</script >
+</body >
+</html >

@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<title>JavaScript Patterns</title>
+		<meta charset="utf-8">
+	</head>
+	<body>
+		<script>
+
+            /**
+             *  在必须 new 的情况下, 避免忘了 new
+             */
+			function Person() {
+				var that = (this === window) ? {} : this;
+				that.name = name;
+				that.say = function () {
+					return "I am " + that.name;
+				};
+				return that;
+			}
+
+			function Coder() {
+                if(!(this instanceof  Coder)) {
+                    return new Coder();
+                }
+                this.duty = 'write code';
+            }
+
+			// reference
+			// http://www.jspatterns.com/
+			// http://shop.oreilly.com/product/9780596806767.do?sortby=publicationDate
+		</script>
+	</body>
+</html>

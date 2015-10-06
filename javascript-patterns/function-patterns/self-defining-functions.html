@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>JavaScript Patterns</title>
+    <meta charset="utf-8">
+</head>
+<body>
+<script>
+
+    /**
+     * 自定义函数
+     * 特性: 过河拆桥, 用于初始化, 确保执行一次
+     */
+    var scareMe = function () {
+        console.log("Boo!");
+        scareMe = function () {
+            console.log("Double boo!");
+        };
+    };
+
+
+//    scareMe();  // Boo!
+//    scareMe();  // Double Boo!
+
+    // 1. adding a new property
+    scareMe.property = "properly";
+
+    /**
+     * 下面是这种模式的缺点
+     */
+
+    // 2. assigning to a different name
+    // 把函数名赋值给其他变量
+    var prank = scareMe;
+    // 3. using as a method
+    var spooky = {
+        boo: scareMe
+    };
+
+    // calling with a new name
+    // 失效了, 因为变量 prank 指向的仍是最初的函数地址, 内部的变量地址变化与 prank 无关了
+    prank(); // "Boo!"
+    prank(); // "Boo!"
+    console.log(prank.property); // "properly"
+
+    // calling as a method
+    // 问题同上
+    spooky.boo(); // "Boo!"
+    spooky.boo(); // "Boo!"
+
+    console.log(spooky.boo.property); // "properly"
+    // using the self-defined function
+    scareMe(); // Double boo!
+    scareMe(); // Double boo!
+    console.log(scareMe.property); // undefined
+</script>
+</body>
+</html>

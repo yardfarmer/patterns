@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="gbk">
+    <title>自调用构造函数</title>
+</head>
+<body>
+
+<script>
+//    'use strict';
+
+    /**
+     * 华夫饼
+     * @returns {Waffle}
+     * @constructor
+     */
+    function Waffle() {
+
+    // 'use strict';
+
+        // 有助于避免忘记使用 new 带来的问题
+        // 这里使用了硬编码, 这里可以是使用 callee
+//        if (!(this instanceof  Waffle)) {
+        if(!(this instanceof arguments.callee)) // es5 严格模式不支持该 callee
+            return new Waffle();
+        }
+
+        this.tastes = "yummy";
+    }
+
+    Waffle.prototype.wantAnother = true;
+
+    var first = new Waffle();
+    var second = Waffle();
+
+    console.log(first.tastes);
+    console.log(first.tastes);
+
+</script>
+
+</body>
+</html>

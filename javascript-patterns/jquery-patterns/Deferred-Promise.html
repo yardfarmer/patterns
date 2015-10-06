@@ -1,0 +1,83 @@
+﻿<!doctype html>
+<html lang="en">
+	<head>
+		<title>JavaScript Patterns</title>
+		<meta charset="utf-8">
+	</head>
+	<body>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		<script>
+			
+			// 所有Ajax 函数（$.ajax、$.get 及$.post）现在都会返回Promise（承诺）对象。
+	     	// Promise 对象代表一项有两种可能结果（成 功或失败）的任务，它还持有多个回调，出现不同结果时会分别触发相应的回调。
+
+			// deferred 延迟, deferred 就是 promise，Deferred 是 Promise 的超集。 
+			var promptDeferred = new $.Deferred();
+			promptDeferred.always( function(){ console.log('a choice was made')});
+			promptDeferred.done( function(){ console.log('hava done')});
+			promptDeferred.fail( function(){ console.log('.....failed ')});
+
+
+			// Promise 对象会一直保持挂起状态，直到被执行或拒绝。
+			   promptDeferred.resolve();  // 执行， 执行 alwasys 和 done
+			// promptDeferred.reject(); // 拒绝，执行 always 和 fail
+
+
+			// ------------------------------ //
+			var nanowrimoing = $.Deferred();
+			var wordGoal = 5000;
+			nanowrimoing.progress( function(wordCount)) {
+					var percentComplete = Math.floor(wordCount / wordGoal * 100);
+					$('#indicator').text(percentComplete + '% complete');
+			});
+
+			nanowrimoing.done(function(){
+				$('#indicator').text('Good job!');
+			});
+			$('#document').on('keypress', function(){
+				var wordCount = $(this).val().split(/\s+/).length; //word count 
+				if (wordCount >= wordGoal) {
+					nanowrimoing.resolve();
+				};
+				nanowrimoing.notify(wordCount); // notify => progress; 配对使用
+			});	
+
+			// 简单总结一下，Promise 对象接受 3 种回调形式：done、fail 和 progress。
+			// 执行Promise 对象时，运行的是done 回调；拒绝Promise 对象时，运行的是fail 回调；
+			// 对处于挂起状态的Deferred 对象调用 notify 时，运行的是progress 回调。
+			
+
+			
+			// when() 同时完成 
+			// 一旦给定的所有 Promise 均已执行，就立即执行 when 方法产生的Promise 对象;
+			// 或者
+			// 一旦给定的任意一个Promise 被拒绝，就立即拒绝when 产生的Promise。
+			// 用例： when 方法的绝佳用例是合并多重Ajax 调用.
+			var gameReadying = $.when(tutorialPromise, gameLoadedPromise);
+			gameReadying.done(startGame);
+			
+			var serverData = {};
+			var getting1 = $.get('/1')
+				.done(function(result) {serverData['1'] = result;});
+			var getting2 = $.get('/2')
+				.done(function(result) {serverData['2'] = result;});
+			$.when(getting1, getting2)
+				.done(function() {
+					// 获得的信息现在都已位于serverData……
+				});
+
+			
+
+
+			// Using .promise() on a collection with no active animation
+            // returns a resolved Promise
+			// 普通没有动画的元素，直接返回一个调用了 resovle 方法的 promise 对象,
+			// 所以 done 方法会立即执行。
+			var div = $('<div>');
+			div.promise().done(function(arg) {
+				console.log(this === div && arg === div); // => true
+			});
+			
+		</script>
+	</body>
+</html>

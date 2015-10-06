@@ -1,0 +1,50 @@
+﻿<!doctype html>
+<html lang="en">
+	<head>
+		<title>JavaScript Patterns</title>
+		<meta charset="utf-8">
+	</head>
+	<body>
+		<script>
+			/* Title: append
+			 * Description: use string concatenate and set innerHTML
+			 */
+
+			// antipattern
+			// 代码分散，依赖字符串拼接，代码维护起来乱七八糟
+			var str = '', i;
+			for (i = 0; i < 10; i ++ ){
+				str += "<span>"+i+"<span>"
+			}
+			$('#target').empty().append(str);
+
+			// antipattern 反模式
+			// appending inside
+			$.each(reallyLongArray, function (count, item) {
+				var newLI = '<li>' + item + '</li>';
+				$('#ballers').append(newLI);
+			});
+
+
+			// documentFragment off-DOM
+			var frag = document.createDocumentFragment();
+			$.each(reallyLongArray, function (index, item) {
+				var newLI = $('<li>' + item + '</li>');
+				frag.appendChild(newLI[0]);   // reduce dom operation
+			});
+			$('#ballers')[0].appendChild(frag);
+
+
+			// string concatenate and set innerHTML
+			var myhtml = '';
+			$.each(reallyLongArray, function (index, item) {
+				myhtml += '<li>' + item + '</li>';
+			});
+			$('#ballers').html(myhtml);
+
+
+			// References
+			// http://paulirish.com/2009/perf/
+		</script>
+	</body>
+</html>

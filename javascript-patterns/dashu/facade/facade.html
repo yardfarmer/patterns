@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html >
+<head lang="en" >
+    <meta charset="UTF-8" >
+    <title ></title >
+</head >
+<body >
+<script >
+// 外观模式, 可以用负责人的概念去理解
+// 有什么事儿, 直接交代负责人去干, 不需要关心具体实现
+
+// 这就是外观模式
+    var addMyEventListener = function(el, ev, fn) {
+        if(el.addEventListener) {
+            el.addEventListener(ev, fn, false);
+        } else if (el.attachEvent) {
+            el.attachEvent('on' + ev, fn);
+        } else {
+            el['on'+ev] = fn;
+        }
+    }
+
+/**
+ *  如何使用外观模式:
+ *
+ *  首先, 在设计初期，有意识的将两层分开, 比如三层结构，比如业务逻辑层和控制层、表现层，建立相应
+ *  的 Facade, 做好接口，做到只要接口不变，底层随便变。
+ *
+ *  开发阶段, 子系统越来越复杂，增加 Facade 接口, 减少他们之间的依赖
+ *
+ *  第三阶段: 在维护一个遗留的大型系统时, 可能已经变得很难维护了, 这时候使用外观模式 Facade 可以
+ *  提供一个简单的接口，  为设计粗糙和高度发杂的遗留代码提供比较清晰的接口, 让新系统和 Facade 对象
+ *  交互, Facade 与 遗留代码交互所有复杂工作。(宝树， 我说做适配，适配接口)
+ *
+ */
+
+
+
+</script >
+</body >
+</html >

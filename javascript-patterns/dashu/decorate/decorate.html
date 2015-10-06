@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>装饰模式</title>
+</head>
+<body>
+<script>
+    //  装饰模式是一种实现继承的替代方案
+    //  要求具有想用接口, 类似 fibonacci 数列的
+    //  一点点的往最初方法上包, wrapper, 往上 `zimo`
+    //  在 wrapper 的时候，就要求具有相同的方法名,
+    //  便于操作
+
+
+    /**
+     * Macbook 构造函数
+     * Created by cyk on 2015年10月5日,17:15.
+     */
+
+    function Macbook() {
+        this.cost = function () {
+            return 1000;
+        }
+    }
+
+
+    function SSD(macbook) {
+        this.cost = function () {
+            return macbook.cost() + 300;
+        }
+    }
+
+    function Memory(macbook) {
+        this.cost = function () {
+            return macbook.cost() + 200;
+        }
+    }
+
+    /**
+     * Created by cyk on 15/10/5.
+     */
+
+    var mac = new Memory(new SSD(new Macbook()));
+
+    console.log("total cost:", mac.cost())
+
+    /**
+     * Solves equations of the form a * x = b
+     * @returns {Number} Returns the value of x for the equation.
+     *
+     * @example
+     * // returns 2
+     * globalNS.method1(5, 10);
+     */
+
+    globalNS.method1 = function (a, b) {
+        return b / a;
+    };
+
+</script>
+</body>
+</html>

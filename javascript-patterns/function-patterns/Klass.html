@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="gbk">
+    <title></title>
+</head>
+<body>
+<script>
+
+    var Klass = function (Parent, props) {
+
+        var Child, F, i;
+
+        Child = function () {
+
+        };
+
+        Parent = Parent || {};
+        F = function () {};
+        F.prototype = Parent.prototype;
+        Child.prototype = new F();
+        Child.super = Parent.prototype;
+        Child.prototype.constructor = Child;
+
+        for (i in props) {
+            if(props.hasOwnProperty(i)) {
+                Child.prototype[i] = props[i];
+            }
+        }
+
+        return Child;
+    }
+
+</script>
+</body>
+</html>

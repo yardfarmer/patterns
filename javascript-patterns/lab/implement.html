@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script>
+
+    function Parent(ver) {
+        this.version = ver;
+    }
+    Parent.prototype.getVersion = function() {
+        return this.version;
+    }
+
+    function Sub(ver) {
+        this.version = ver;
+    }
+
+
+    function impl(Pa, Su) {
+        Su.prototype = new Pa(2.0);
+    }
+
+    impl(Parent, Sub);
+
+    var child = new Sub(3);
+
+    console.dir(child);
+
+    console.log(child.getVersion());
+
+</script>
+</body>
+</html>

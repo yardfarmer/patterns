@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html >
+<head lang="en" >
+    <meta charset="UTF-8" >
+    <title >pubsub</title >
+</head >
+<body >
+<script >
+    var pubsub = {};
+
+    (function(q) {
+
+        var topics = {}; // 利用闭包, 代替全局变量
+
+        // 发布方法
+        q.pub = function(topic, args) {
+
+            if( !topics[topic] ) {
+                return false;
+            }
+
+            setTimeout(function() {
+                var subscribers = topics[topic],
+                        len = subscribers ? subscribers.length : 0;
+                while( len-- ) {
+                    subscribers[len].func(topic, args);
+                }
+            }, 0);
+
+            return true;
+        };
+
+        // 订阅方法
+        q.sub = function(topic, func) {
+            topics[topic] = topics[topic] || [];
+            var subscriber = topics[topic];
+
+            subscriber.push({
+                func: func
+            });
+
+            return;
+        };
+
+        q.unsub = function(topic) {
+
+        };
+        return q;
+
+    })(pubsub);
+
+
+    pubsub.sub('hi', function() { console.log('have a good time'); })
+    pubsub.pub('hi');
+</script >
+</body >
+</html >

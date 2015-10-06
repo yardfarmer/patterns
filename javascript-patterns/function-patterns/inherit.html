@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="gbk">
+    <title>类式继承模式</title>
+</head>
+<body>
+<script>
+    function Parent() {
+
+    }
+
+    function Child() {
+
+    }
+
+
+    /**
+     * #1 原型继承
+     */
+    function inherit_1(Child, Parent) {
+        Child.prototype = new Parent();
+    }
+
+    /**
+     * #2 借用构造函数
+     *
+     * 只能继承父类 Parent 构造函数添加到 this 的属性,
+     * 不能继承原型成员
+     */
+    function Child_1() {
+        Parent.apply(this, arguments);
+    }
+
+    /**
+     * #3 借用和设置原型
+     * 既可继承父类的对象本身的成员属性, 也可以继承原型对象
+     *
+     * 但
+     * 父类构造函数执行了两次, 父类的自身属性会被继承两次
+     * 会导致子对象的自身属性属性上和原型对象上挂载同样的,
+     * 从父类继承下来的成员属性
+     */
+    function Child_2() {
+        Parent.apply(this, arguments);
+    }
+    Child_2.prototype = new Parent();
+
+
+    /**
+     * #4 共享原型
+     * 可复用的成员应该转移到原型中而不是放置在 this 中,
+     * 因此直接继承父类的原型
+     *
+     * 但是子类与父类共享同一个原型对象, 这样是不安全的,
+     * 没准哪个孙子就会修改了父类的原型对象
+     */
+    function inherit_2(C, P) {
+        C.prototype = P.prototype;
+    }
+
+    /**
+     * # 临时构造函数
+     *
+     * Child 的 prototype 与 Parent 的 prototype 对象之间
+     * 被临时的构造函数隔断了
+     */
+    function inherit_3(C, P) {
+        var F = function() {};
+        // 父类的的构造函数内的成员属性不会被继承
+        F.prototype = P.prototype;
+        C.prototype = new F();
+    }
+
+
+</script>
+</body>
+</html>

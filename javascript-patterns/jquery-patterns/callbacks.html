@@ -1,0 +1,51 @@
+﻿<!doctype html>
+<html lang="en">
+	<head>
+		<title>JavaScript Patterns</title>
+		<meta charset="utf-8">
+	</head>
+	<body>
+		<script>
+			/* Title: Callbacks
+			 * Description: A multi-purpose callbacks list object that provides a powerful way to
+			 * manage callback lists.
+			 */
+
+
+			function fn1( value ) {
+				console.log( value );
+			}
+
+			function fn2( value ) {
+				console.log( "fn2 says: " + value);
+			}
+			// antipattern
+			var callbacks = $.Callbacks();
+			callbacks.add( fn1 );
+
+			callbacks.fire( "foo!" ); // output: foo!
+
+			callbacks.add( fn2 );
+
+			callbacks.fire( "bar!" ); // output: bar! fn2 says: bar!
+
+			callbacks.remove( fn2 );
+
+			callbacks.fire(" foobar "); // output: foobar
+
+
+			// Tags:
+			
+			var clbk = $.Callbacks('once memory unique stopOnFalse');
+
+			// once: Ensures the callback list can only be fired once.
+			// memory: Keeps track of previous values and will call any callback added
+			//		   after the list has been fired right away with the latest "memorized" values
+			// 		   接力棒， mapReduce.
+			// unique: Ensures a callback can only be added once (so there are no duplicates in the list).
+			// stopOnFalse: Interrupts callings when a callback returns false.
+
+
+		</script>
+	</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script>
+
+    var obj;
+    (function() {
+        // 立即执行函数内部的 this 上下文是 window
+        console.log('inner', obj , 'and this is: ', this);
+        obj = {};
+    })();
+
+    // 上面这种方式其实等同于下面这种方式
+    // 区别在于上面的采用匿名函数,下面的使用具名函数
+    // 调用者都是在全局上下文 window 中.
+
+
+    function func() {
+        // some code
+    }
+    var val = func();
+
+    console.log('outer', obj);
+
+
+
+
+</script>
+</body>
+</html>
